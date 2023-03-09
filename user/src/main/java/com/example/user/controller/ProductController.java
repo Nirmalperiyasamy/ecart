@@ -2,6 +2,7 @@ package com.example.user.controller;
 
 import com.example.user.dto.ProductDto;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.User;
@@ -16,6 +17,9 @@ import static com.example.user.utils.Constants.API_PRODUCT;
 @RestController
 @Slf4j
 public class ProductController {
+
+    @Value("${addProduct}")
+    protected String url;
 
     @PostMapping(ADD)
     ResponseEntity<?> addProduct(@RequestBody ProductDto dto) {
@@ -32,7 +36,7 @@ public class ProductController {
         log.info(String.valueOf(dtoMono));
 
         return ResponseEntity.ok(webClient.post()
-                .uri("http://localhost:5000/addProduct")
+                .uri(url)
                 .body(dtoMono, ProductDto.class)
                 .retrieve().bodyToMono(ProductDto.class).block());
     }
