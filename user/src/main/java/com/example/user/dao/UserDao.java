@@ -4,7 +4,6 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
-import java.util.UUID;
 
 @Entity
 @Table
@@ -13,7 +12,9 @@ import java.util.UUID;
 public class UserDao {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private UUID id;
+    private int id;
+
     private String username;
+
     private String password;
 }

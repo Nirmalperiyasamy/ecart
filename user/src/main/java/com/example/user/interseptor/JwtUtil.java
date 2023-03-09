@@ -1,16 +1,22 @@
 package com.example.user.interseptor;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
+import lombok.SneakyThrows;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
-import javax.xml.crypto.Data;
-import java.awt.*;
-import java.util.*;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.function.Function;
+
+@Slf4j
 @Service
 public class JwtUtil {
 
@@ -37,7 +43,7 @@ public class JwtUtil {
     private Date addTime(Date date) {
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(date);
-        int seconds = 60;
+        int seconds = 60000;
         calendar.add(Calendar.SECOND, seconds);
         return calendar.getTime();
     }
@@ -51,8 +57,10 @@ public class JwtUtil {
         return extractClaim(token, Claims::getSubject);
     }
 
+    @SneakyThrows
     public <T> T extractClaim(String token, Function<Claims, T> claimsResolver) {
         final Claims claims = extractAllClaims(token);
+        log.info(new ObjectMapper().writeValueAsString(claims));
         return claimsResolver.apply(claims);
     }
 
