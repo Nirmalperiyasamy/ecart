@@ -10,8 +10,9 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Mono;
 
-import static com.example.user.utils.Constants.ADD;
-import static com.example.user.utils.Constants.API_PRODUCT;
+import java.util.List;
+
+import static com.example.user.utils.Constants.*;
 
 @RequestMapping(API_PRODUCT)
 @RestController
@@ -20,6 +21,11 @@ public class ProductController {
 
     @Value("${addProduct}")
     protected String url;
+
+    @Value("${byUser}")
+    protected String url1;
+
+    WebClient webClient = WebClient.create();
 
     @PostMapping(ADD)
     ResponseEntity<?> addProduct(@RequestBody ProductDto dto) {
@@ -31,7 +37,7 @@ public class ProductController {
             dto.setUuid(username);
         }
 
-        WebClient webClient = WebClient.create();
+
         Mono<ProductDto> dtoMono = Mono.just(dto);
         log.info(String.valueOf(dtoMono));
 
@@ -40,4 +46,15 @@ public class ProductController {
                 .body(dtoMono, ProductDto.class)
                 .retrieve().bodyToMono(ProductDto.class).block());
     }
+
+    @GetMapping(PRODUCT_BY_USER)
+    public ResponseEntity<?> byUser() {
+        Mono<List<ProductDto>> dataMono = webClient.get()
+                .uri(url)
+                .retrieve()
+                .bodyToFlux(ProductDto.class)
+                .collectList();
+        return ResponseEntity.ok(dataMono);
+    }
+
 }

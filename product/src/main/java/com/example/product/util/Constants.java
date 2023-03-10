@@ -6,5 +6,6 @@ public class Constants {
 
     public final static String API = "/api";
 
+    public final static String PRODUCT_BY_USER = "/byuser";
 
 }

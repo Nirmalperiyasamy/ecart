@@ -18,6 +18,6 @@ public class Constants {
 
     public final static String ADD = "/add";
 
-
+    public final static String PRODUCT_BY_USER = "/byuser";
 
 }
