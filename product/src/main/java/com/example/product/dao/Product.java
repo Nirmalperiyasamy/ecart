@@ -9,13 +9,13 @@ import javax.persistence.*;
 @Table
 @Getter
 @Setter
-public class ProductDao {
+public class Product {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
 
-    private String username;
+    private String uuid;
 
     private String product;
 

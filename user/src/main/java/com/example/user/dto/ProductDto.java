@@ -7,7 +7,7 @@ public class ProductDto {
 
     private int id;
 
-    private String username;
+    private String uuid;
 
     private String product;
 

@@ -1,11 +1,10 @@
 package com.example.product.controller;
 
-import com.example.product.dao.ProductDao;
+import com.example.product.dao.Product;
 import com.example.product.dto.ProductDto;
 import com.example.product.service.ProductService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -22,8 +21,8 @@ public class ProductController {
     protected ProductService productService;
 
     @PostMapping(ADD_PRODUCT)
-    public ProductDao addProduct(@RequestBody ProductDto dto) {
-        log.info(String.valueOf(dto));
+    public Product addProduct(@RequestBody ProductDto dto) {
+
         return productService.addProduct(dto);
     }
 }

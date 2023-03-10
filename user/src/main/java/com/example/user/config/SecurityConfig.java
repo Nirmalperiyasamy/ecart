@@ -1,5 +1,6 @@
 package com.example.user.config;
 
+import com.example.user.interceptor.AuthJwtFilter;
 import com.example.user.service.UserServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -19,7 +20,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     protected UserServiceImpl userService;
 
     @Autowired
-    protected JwtFilter jwtFilter;
+    protected AuthJwtFilter jwtFilter;
 
     @Bean(name = BeanIds.AUTHENTICATION_MANAGER)
     @Override

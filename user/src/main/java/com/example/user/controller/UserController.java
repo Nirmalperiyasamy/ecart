@@ -1,10 +1,10 @@
 package com.example.user.controller;
 
 import com.example.user.dto.UserDto;
-import com.example.user.interseptor.JwtUtil;
+import com.example.user.interceptor.JwtUtil;
 import com.example.user.service.UserServiceImpl;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import static com.example.user.utils.Constants.*;
 
 @RestController
+@Slf4j
 @RequestMapping(API)
 public class UserController {
 
@@ -23,7 +24,7 @@ public class UserController {
     protected JwtUtil jwtUtil;
 
     @Autowired
-    AuthenticationManager authenticationManager;
+    protected AuthenticationManager authenticationManager;
 
     @GetMapping(PING)
     public ResponseEntity<?> ping() {
@@ -32,6 +33,7 @@ public class UserController {
 
     @PostMapping(REGISTER)
     public ResponseEntity<?> register(@RequestBody UserDto dto) {
+        log.info(String.valueOf(dto));
         userService.register(dto);
         return ResponseEntity.ok("Registered successfully");
     }
@@ -39,12 +41,14 @@ public class UserController {
 
     @PostMapping(TOKEN)
     public ResponseEntity<?> generateToken(@RequestBody UserDto dto) throws Exception {
+
+        UserDto anotherDto = userService.findByName(dto);
         try {
-            authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(dto.getUsername(), dto.getPassword()));
+            authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(anotherDto.getUuid(), dto.getPassword()));
         } catch (Exception e) {
-            throw new Exception("Invalid username or password");
+            throw new ClassCastException("Invalid username or password");
         }
-        return ResponseEntity.ok(jwtUtil.generateToken(dto.getUsername()));
+        return ResponseEntity.ok(jwtUtil.generateToken(anotherDto.getUuid()));
     }
 
 

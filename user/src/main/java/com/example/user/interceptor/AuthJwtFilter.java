@@ -1,6 +1,6 @@
-package com.example.user.config;
+package com.example.user.interceptor;
 
-import com.example.user.interseptor.JwtUtil;
+import com.example.user.interceptor.JwtUtil;
 import com.example.user.service.UserServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -17,7 +17,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 @Component
-public class JwtFilter extends OncePerRequestFilter {
+public class AuthJwtFilter extends OncePerRequestFilter {
 
     @Autowired
     protected UserServiceImpl userService;
@@ -25,18 +25,20 @@ public class JwtFilter extends OncePerRequestFilter {
     @Autowired
     protected JwtUtil jwtUtil;
 
+
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
             throws ServletException, IOException {
-        String userName = null;
+
+        String uuid = null;
         String authorizationHeader = request.getHeader("Authorization");
         if (authorizationHeader != null) {
             authorizationHeader = authorizationHeader.replace("Bearer", "");
-            userName = jwtUtil.extractUsername(authorizationHeader.trim());
+            uuid = jwtUtil.extractUsername(authorizationHeader.trim());
         }
 
-        if (userName != null && SecurityContextHolder.getContext().getAuthentication() == null) {
-            UserDetails userDetails = this.userService.loadUserByUsername(userName);
+        if (uuid != null && SecurityContextHolder.getContext().getAuthentication() == null) {
+            UserDetails userDetails = userService.loadUserByUsername(uuid);
             if (jwtUtil.validateToken(authorizationHeader, userDetails)) {
 
                 UsernamePasswordAuthenticationToken

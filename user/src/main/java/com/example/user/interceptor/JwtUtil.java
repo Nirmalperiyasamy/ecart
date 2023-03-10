@@ -1,4 +1,4 @@
-package com.example.user.interseptor;
+package com.example.user.interceptor;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.jsonwebtoken.Claims;
@@ -43,7 +43,7 @@ public class JwtUtil {
     private Date addTime(Date date) {
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(date);
-        int seconds = 60000;
+        int seconds = 6000000;
         calendar.add(Calendar.SECOND, seconds);
         return calendar.getTime();
     }

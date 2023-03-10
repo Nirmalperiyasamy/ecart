@@ -28,7 +28,7 @@ public class ProductController {
         if (principal instanceof User) {
             User user = (User) principal;
             String username = user.getUsername();
-            dto.setUsername(username);
+            dto.setUuid(username);
         }
 
         WebClient webClient = WebClient.create();
