@@ -1,6 +1,8 @@
 package com.example.user.controller;
 
+import com.example.user.Messages;
 import com.example.user.dto.UserDto;
+import com.example.user.globalexception.CustomException;
 import com.example.user.interceptor.JwtUtil;
 import com.example.user.service.UserServiceImpl;
 import lombok.extern.slf4j.Slf4j;
@@ -33,7 +35,6 @@ public class UserController {
 
     @PostMapping(REGISTER)
     public ResponseEntity<?> register(@RequestBody UserDto dto) {
-        log.info(String.valueOf(dto));
         userService.register(dto);
         return ResponseEntity.ok("Registered successfully");
     }
@@ -44,11 +45,11 @@ public class UserController {
 
         UserDto anotherDto = userService.findByName(dto);
         try {
-            authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(anotherDto.getUuid(), dto.getPassword()));
+            authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(anotherDto.getUid(), dto.getPassword()));
         } catch (Exception e) {
-            throw new ClassCastException("Invalid username or password");
+            throw new CustomException(Messages.INVALID);
         }
-        return ResponseEntity.ok(jwtUtil.generateToken(anotherDto.getUuid()));
+        return ResponseEntity.ok(jwtUtil.generateToken(anotherDto.getUid()));
     }
 
 

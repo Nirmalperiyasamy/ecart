@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class ProductService {
@@ -24,22 +25,19 @@ public class ProductService {
     }
 
     public List<ProductDto> productByUser(String token) {
-        List<Product> pro = productRepo.findByUuid(token);
-        List<ProductDto> dto = convertToDtoList(pro);
+        List<Product> products = productRepo.findByUid(token);
+        List<ProductDto> dto = convertToDtoList(products);
         return dto;
     }
 
-    private List<ProductDto> convertToDtoList(List<Product> pro) {
-        List<ProductDto> dto = new ArrayList<>();
-        for (Product product : pro) {
-            dto.add(convertToDto(product));
-        }
+    private List<ProductDto> convertToDtoList(List<Product> products) {
+        List<ProductDto> dto = products.stream().map(product -> this.convertToDto(product)).collect(Collectors.toList());
         return dto;
     }
 
     private ProductDto convertToDto(Product pro) {
         ProductDto dto = new ProductDto();
-        dto.setUuid(pro.getUuid());
+        dto.setUid(pro.getUid());
         dto.setProduct(pro.getProduct());
         dto.setPrice(pro.getPrice());
         return dto;

@@ -1,8 +1,10 @@
 package com.example.user.globalexception;
 
+import com.example.user.Messages;
+
 public class CustomException extends RuntimeException{
 
-    public CustomException(String errors) {
+    public CustomException(Messages errors) {
 
     }
 }

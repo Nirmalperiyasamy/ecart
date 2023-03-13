@@ -4,9 +4,9 @@ import lombok.Data;
 
 @Data
 public class ProductDto {
-    private int id;
+    private Integer id;
 
-    private String uuid;
+    private String uid;
 
     private String product;
 

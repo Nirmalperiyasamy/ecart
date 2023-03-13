@@ -15,7 +15,7 @@ import static com.example.product.util.Constants.*;
 
 @RestController
 @Slf4j
-@RequestMapping(API)
+@RequestMapping(API_PRODUCT)
 public class ProductController {
     @Autowired
     protected ProductService productService;

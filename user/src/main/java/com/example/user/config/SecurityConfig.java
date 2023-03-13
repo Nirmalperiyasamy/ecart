@@ -16,6 +16,9 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @Configuration
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
+    private final String[] PERMITTED_ROUTES = {"/api/register", "/api/token"};
+
+
     @Autowired
     protected UserServiceImpl userService;
 
@@ -32,12 +35,13 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         auth.userDetailsService(userService);
     }
 
+
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.csrf()
                 .disable()
                 .authorizeRequests()
-                .antMatchers("/api/register", "/api/token")
+                .antMatchers(PERMITTED_ROUTES[0], PERMITTED_ROUTES[1])
                 .permitAll()
                 .anyRequest()
                 .authenticated()

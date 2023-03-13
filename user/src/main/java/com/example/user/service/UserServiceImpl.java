@@ -1,5 +1,6 @@
 package com.example.user.service;
 
+import com.example.user.Messages;
 import com.example.user.dao.User;
 import com.example.user.dto.UserDto;
 import com.example.user.globalexception.CustomException;
@@ -30,14 +31,14 @@ public class UserServiceImpl implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String uid) throws UsernameNotFoundException {
-        User user = userRepository.findByUuid(uid);
+        User user = userRepository.findByUid(uid);
         return new org.springframework.security.core.userdetails.User
-                (user.getUuid(), user.getPassword(), new ArrayList<>());
+                (user.getUid(), user.getPassword(), new ArrayList<>());
     }
 
     public void register(UserDto dto) {
         User dao = new User();
-        dto.setUuid(UUID.randomUUID().toString());
+        dto.setUid(UUID.randomUUID().toString());
         BeanUtils.copyProperties(dto, dao);
         String password = new BCryptPasswordEncoder().encode(dto.getPassword());
         dao.setPassword(password);
@@ -47,10 +48,10 @@ public class UserServiceImpl implements UserDetailsService {
     public UserDto findByName(UserDto dto) {
         if (userExist(dto.getUsername())) {
             User dao = userRepository.findByUsername(dto.getUsername());
-            dto.setUuid(dao.getUuid());
+            dto.setUid(dao.getUid());
             return dto;
         }
-        throw new CustomException("User not registered");
+        throw new CustomException(Messages.NOT_REGISTERED);
     }
 
     boolean userExist(String username) {
