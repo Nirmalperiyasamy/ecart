@@ -3,11 +3,13 @@ server:
 
 spring:
   datasource:
-    url: jdbc:mysql://localhost:3306/product_details
+    url: jdbc:mysql://localhost:3306/user_details
   username: spring
   password: 1234
+  jpa:
+    hibernate:
+      ddl-auto: update
 
-jpa: hibernate.ddl-auto=update
-
-secret: my-secret-value
-url: http://localhost:5000/api/product/add-product
+myapp:
+  url: http://localhost:5000/api/product/add-product
+  secret-key: my-secret-value

@@ -4,26 +4,26 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
-import javax.persistence.criteria.CriteriaBuilder;
 
 @Entity
 @Table
 @Getter
 @Setter
-public class Product {
+public class OrderRecipt {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
 
-    private String uid;
+    private String customer_uid;
+
+    private String product_owner_uid;
 
     private String product;
 
-    private Integer price;
-
-    private Integer fixed_count;
-
     private Integer count;
 
+    private Integer price;
+
+    private String date;
 }

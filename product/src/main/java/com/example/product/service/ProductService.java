@@ -1,6 +1,8 @@
 package com.example.product.service;
 
+import com.example.product.dao.OrderRecipt;
 import com.example.product.dao.Product;
+import com.example.product.dto.OrderDto;
 import com.example.product.dto.ProductDto;
 import com.example.product.repository.ProductRepo;
 import org.springframework.beans.BeanUtils;
@@ -21,6 +23,7 @@ public class ProductService {
         Product dao = new Product();
         BeanUtils.copyProperties(dto, dao);
         productRepo.save(dao);
+        BeanUtils.copyProperties(dao, dto);
         return dto;
     }
 
@@ -36,10 +39,15 @@ public class ProductService {
     }
 
     private ProductDto convertToDto(Product pro) {
-        ProductDto dto = new ProductDto();
-        dto.setUid(pro.getUid());
-        dto.setProduct(pro.getProduct());
-        dto.setPrice(pro.getPrice());
+        ProductDto dto = ProductDto.builder()
+                .id(pro.getId())
+                .uid(pro.getUid())
+                .product(pro.getProduct())
+                .price(pro.getPrice())
+                .fixed_count(pro.getFixed_count())
+                .count(pro.getCount())
+                .build();
         return dto;
     }
+
 }

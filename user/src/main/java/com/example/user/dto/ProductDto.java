@@ -11,5 +11,9 @@ public class ProductDto {
 
     private String product;
 
-    private String price;
+    private Integer price;
+
+    private Integer fixed_count;
+
+    private Integer count;
 }

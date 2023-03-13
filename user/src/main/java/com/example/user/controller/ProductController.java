@@ -1,6 +1,7 @@
 package com.example.user.controller;
 
 import com.example.user.Messages;
+import com.example.user.dto.OrderDto;
 import com.example.user.dto.ProductDto;
 import com.example.user.globalexception.CustomException;
 import com.example.user.interceptor.JwtUtil;
@@ -37,8 +38,8 @@ public class ProductController {
         Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         if (principal instanceof User) {
             User user = (User) principal;
-            String username = user.getUsername();
-            dto.setUid(username);
+            String uid = user.getUsername();
+            dto.setUid(uid);
         } else {
             throw new CustomException(Messages.INVALID);
         }
@@ -69,15 +70,35 @@ public class ProductController {
                             .queryParam("uid", uid)
                             .build())
                     .retrieve()
-                    .bodyToMono(ProductDto[].class)
-                    .block();
+                    .bodyToMono(ProductDto[].class).block();
 
             return ResponseEntity.ok(productDto);
         } catch (Exception e) {
             e.printStackTrace();
             return ResponseEntity.badRequest().build();
         }
+    }
 
+    WebClient webClient2 = WebClient.create();
+
+    @PostMapping(ORDER)
+    ResponseEntity<?> order(@RequestBody OrderDto orderDto) {
+
+        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        if (principal instanceof User) {
+            User user = (User) principal;
+            String uid = user.getUsername();
+            orderDto.setCustomer_uid(uid);
+        } else {
+            throw new CustomException(Messages.INVALID);
+        }
+
+        Mono<OrderDto> orderMono = Mono.just(orderDto);
+
+        return ResponseEntity.ok(webClient2.post()
+                .uri("http://localhost:5000/api/order/place-order")
+                .body(orderMono, OrderDto.class)
+                .retrieve().bodyToMono(OrderDto.class).block());
     }
 
 }
