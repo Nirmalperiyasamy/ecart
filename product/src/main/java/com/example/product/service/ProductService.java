@@ -23,8 +23,8 @@ public class ProductService {
         return dto;
     }
 
-    public List<ProductDto> productByUser() {
-        List<Product> pro = productRepo.findAll();
+    public List<ProductDto> productByUser(String token) {
+        List<Product> pro = productRepo.findByUuid(token);
         List<ProductDto> dto = convertToDtoList(pro);
         return dto;
     }

@@ -1,6 +1,5 @@
 package com.example.user.interceptor;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -57,10 +56,9 @@ public class JwtUtil {
         return extractClaim(token, Claims::getSubject);
     }
 
-    @SneakyThrows
     public <T> T extractClaim(String token, Function<Claims, T> claimsResolver) {
         final Claims claims = extractAllClaims(token);
-        log.info(new ObjectMapper().writeValueAsString(claims));
+//        log.info(new ObjectMapper().writeValueAsString(claims));
         return claimsResolver.apply(claims);
     }
 

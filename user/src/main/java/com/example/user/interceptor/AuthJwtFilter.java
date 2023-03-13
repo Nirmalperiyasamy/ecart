@@ -54,5 +54,6 @@ public class AuthJwtFilter extends OncePerRequestFilter {
 
         filterChain.doFilter(request, response);
     }
+
 }
 
