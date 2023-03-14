@@ -44,7 +44,7 @@ public class ProductService {
                 .uid(pro.getUid())
                 .product(pro.getProduct())
                 .price(pro.getPrice())
-                .fixed_count(pro.getFixed_count())
+                .fixedCount(pro.getFixedCount())
                 .count(pro.getCount())
                 .build();
         return dto;

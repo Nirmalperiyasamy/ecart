@@ -27,8 +27,6 @@ public class ProductController {
     @Value("${add-product}")
     protected String url;
 
-    @Value("${place-order}")
-    protected String url1;
 
     @Autowired
     protected JwtUtil jwtUtil;
@@ -50,7 +48,7 @@ public class ProductController {
         Mono<ProductDto> dtoMono = Mono.just(dto);
 
         return ResponseEntity.ok(webClient.post()
-                .uri(url)
+                .uri(url + ADD_PRODUCT_URL)
                 .body(dtoMono, ProductDto.class)
                 .retrieve().bodyToMono(ProductDto.class).block());
     }
@@ -91,7 +89,7 @@ public class ProductController {
         if (principal instanceof User) {
             User user = (User) principal;
             String uid = user.getUsername();
-            orderDto.setCustomer_uid(uid);
+            orderDto.setCustomerUid(uid);
         } else {
             throw new CustomException(Messages.INVALID);
         }
@@ -99,7 +97,7 @@ public class ProductController {
         Mono<OrderDto> orderMono = Mono.just(orderDto);
 
         return ResponseEntity.ok(webClient2.post()
-                .uri(url1)
+                .uri(url + PLACE_ORDER_URL)
                 .body(orderMono, OrderDto.class)
                 .retrieve().bodyToMono(OrderDto.class).subscribe());
     }

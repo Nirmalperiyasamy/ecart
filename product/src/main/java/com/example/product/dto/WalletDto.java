@@ -7,7 +7,7 @@ public class WalletDto {
 
     private String id;
 
-    private String customer_uid;
+    private String customerUid;
 
     private Integer balance;
 }

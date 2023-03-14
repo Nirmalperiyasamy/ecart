@@ -34,7 +34,7 @@ public class OrderService {
         OrderRecipt orderRecipt = new OrderRecipt();
         BeanUtils.copyProperties(dto, orderRecipt);
 
-        orderRecipt.setProduct_owner_uid(ownerUid(dto));
+        orderRecipt.setProductOwnerUid(ownerUid(dto));
 
         orderRecipt.setPrice(totalAmount(dto));
 
@@ -61,7 +61,7 @@ public class OrderService {
 
         Product product = productRepo.findByProduct(dto.getProduct());
 
-        Wallet wallet = walletRepo.findByCustomer(dto.getCustomer_uid());
+        Wallet wallet = walletRepo.findByCustomer(product.getUid());
 
         if (dto.getCount() * product.getPrice() < wallet.getBalance()) {
             wallet.setBalance(wallet.getBalance() - dto.getCount() * product.getPrice());

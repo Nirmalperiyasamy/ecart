@@ -16,7 +16,7 @@ public class ProductDto {
 
     private Integer price;
 
-    private Integer fixed_count;
+    private Integer fixedCount;
 
     private Integer count;
 }

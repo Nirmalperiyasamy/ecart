@@ -15,9 +15,9 @@ public class OrderRecipt {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
 
-    private String customer_uid;
+    private String customerUid;
 
-    private String product_owner_uid;
+    private String productOwnerUid;
 
     private String product;
 

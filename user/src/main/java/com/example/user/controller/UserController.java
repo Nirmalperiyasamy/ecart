@@ -8,6 +8,7 @@ import com.example.user.interceptor.JwtUtil;
 import com.example.user.service.UserServiceImpl;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -23,6 +24,9 @@ import static com.example.user.utils.Constants.*;
 @Slf4j
 @RequestMapping(API)
 public class UserController {
+
+    @Value("${add-product}")
+    protected String url;
 
     @Autowired
     protected UserServiceImpl userService;
@@ -47,7 +51,7 @@ public class UserController {
         UserDto uid = userService.findByName(dto);
         Mono<String> monoUid = Mono.just(uid.getUid());
         webClient.post()
-                .uri("http://localhost:5000/api/wallet/add")
+                .uri(url + WALLET_URL)
                 .body(monoUid, String.class)
                 .retrieve()
                 .bodyToMono(String.class).subscribe();

@@ -7,9 +7,9 @@ import javax.persistence.criteria.CriteriaBuilder;
 @Data
 public class OrderDto {
 
-    private String customer_uid;
+    private String customerUid;
 
-    private String product_owner_uid;
+    private String productOwnerUid;
 
     private String product;
 

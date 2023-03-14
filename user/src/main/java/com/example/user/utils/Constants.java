@@ -24,5 +24,11 @@ public class Constants {
 
     public final static String ORDER = "/add-order";
 
+    public final static String ADD_PRODUCT_URL = "/product/add-product";
+
+    public final static String PLACE_ORDER_URL = "/order/place-order";
+
+    public final static String WALLET_URL = "/add-order";
+
 
 }

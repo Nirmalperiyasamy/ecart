@@ -23,7 +23,6 @@ public class WalletController {
 
     @PostMapping(ADD_WALLET)
     public ResponseEntity<?> wallet(@RequestBody String uid) {
-        log.info(uid);
         return walletService.addWallet(uid);
     }
 }
