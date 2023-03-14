@@ -63,21 +63,20 @@ public class OrderService {
 
         Wallet wallet = walletRepo.findByCustomer(product.getUid());
 
-        if (dto.getCount() * product.getPrice() < wallet.getBalance()) {
+        if (!(dto.getCount() * product.getPrice() < wallet.getBalance()))
+            throw new CustomException(Messages.INSUFFICIENT_BALANCE);
+        else {
             wallet.setBalance(wallet.getBalance() - dto.getCount() * product.getPrice());
             walletRepo.save(wallet);
-            return dto.getCount() * product.getPrice();
-        } else {
-            throw new CustomException(Messages.INSUFFICIENT_BALANCE);
 
+            return dto.getCount() * product.getPrice();
         }
     }
 
     void countLimit(OrderDto dto) {
         Product product = productRepo.findByProduct(dto.getProduct());
-        if (product.getCount() <= dto.getCount()) {
-            throw new CustomException(Messages.SOLD);
-        } else {
+        if (product.getCount() <= dto.getCount()) throw new CustomException(Messages.SOLD);
+        else {
             product.setCount(product.getCount() - dto.getCount());
             productRepo.save(product);
         }
