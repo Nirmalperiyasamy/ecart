@@ -1,0 +1,21 @@
+server.port: 7000
+
+spring:
+  application:
+    name: PRODUCT-SERVICE
+  datasource:
+    url: jdbc:mysql://localhost:3306/user_details
+    username: spring
+    password: 1234
+    driverClassName: com.mysql.cj.jdbc.Driver
+
+  jpa:
+      properties.hibernate.dialect: org.hibernate.dialect.MySQL8Dialect
+      hibernate.ddl-auto: update
+
+my:
+  secret.string: something
+
+add-product: http://localhost:5000/api/product/add-product
+
+place-order: http://localhost:5000/api/order/place-order

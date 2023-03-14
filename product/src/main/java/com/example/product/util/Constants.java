@@ -12,5 +12,11 @@ public class Constants {
 
     public final static String ORDER = "/place-order";
 
+    public final static String WALLET = "/api/wallet";
+
+    public final static String ADD_WALLET = "/api/wallet";
+
+
+
 
 }

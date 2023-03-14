@@ -27,6 +27,9 @@ public class ProductController {
     @Value("${add-product}")
     protected String url;
 
+    @Value("${place-order}")
+    protected String url1;
+
     @Autowired
     protected JwtUtil jwtUtil;
 
@@ -96,9 +99,9 @@ public class ProductController {
         Mono<OrderDto> orderMono = Mono.just(orderDto);
 
         return ResponseEntity.ok(webClient2.post()
-                .uri("http://localhost:5000/api/order/place-order")
+                .uri(url1)
                 .body(orderMono, OrderDto.class)
-                .retrieve().bodyToMono(OrderDto.class).block());
+                .retrieve().bodyToMono(OrderDto.class).subscribe());
     }
 
 }

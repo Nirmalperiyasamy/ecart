@@ -4,9 +4,9 @@ package com.example.product.exception;
 
 import com.example.product.util.Messages;
 
-public class CustomException extends RuntimeException{
+public class CustomException extends RuntimeException {
 
     public CustomException(Messages errors) {
-
+        super(String.valueOf(errors));
     }
 }

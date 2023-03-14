@@ -1,6 +1,7 @@
 package com.example.user.controller;
 
 import com.example.user.Messages;
+import com.example.user.dto.OrderDto;
 import com.example.user.dto.UserDto;
 import com.example.user.globalexception.CustomException;
 import com.example.user.interceptor.JwtUtil;
@@ -10,7 +11,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.reactive.function.client.WebClient;
+import reactor.core.publisher.Mono;
 
 import static com.example.user.utils.Constants.*;
 
@@ -33,9 +38,20 @@ public class UserController {
         return ResponseEntity.ok("PONG");
     }
 
+
+    WebClient webClient = WebClient.create();
+
     @PostMapping(REGISTER)
     public ResponseEntity<?> register(@RequestBody UserDto dto) {
         userService.register(dto);
+        UserDto uid = userService.findByName(dto);
+        Mono<String> monoUid = Mono.just(uid.getUid());
+        webClient.post()
+                .uri("http://localhost:5000/api/wallet/add")
+                .body(monoUid, String.class)
+                .retrieve()
+                .bodyToMono(String.class).subscribe();
+
         return ResponseEntity.ok("Registered successfully");
     }
 

@@ -10,5 +10,12 @@ public enum Messages {
         public String toString() {
             return "Invalid username or password";
         }
+    },
+
+    USERNAME_EXIST {
+        public String toString() {
+            return "User already exist";
+        }
     }
+
 }

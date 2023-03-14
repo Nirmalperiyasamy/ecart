@@ -1,11 +1,13 @@
 package com.example.product.service;
 
+import com.example.product.dao.Wallet;
 import com.example.product.exception.CustomException;
 import com.example.product.dao.OrderRecipt;
 import com.example.product.dao.Product;
 import com.example.product.dto.OrderDto;
 import com.example.product.repository.OrderRepo;
 import com.example.product.repository.ProductRepo;
+import com.example.product.repository.WalletRepo;
 import com.example.product.util.Messages;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +23,9 @@ public class OrderService {
 
     @Autowired
     protected ProductRepo productRepo;
+
+    @Autowired
+    protected WalletRepo walletRepo;
 
     public OrderDto orderProduct(OrderDto dto) {
 
@@ -42,8 +47,8 @@ public class OrderService {
     }
 
     private String orderTime() {
-        Calendar calendar = Calendar.getInstance();
-        return calendar.getTime().toString();
+        Date date = new Date(System.currentTimeMillis());
+        return date.toString();
     }
 
     private String ownerUid(OrderDto dto) {
@@ -53,8 +58,19 @@ public class OrderService {
 
 
     private Integer totalAmount(OrderDto dto) {
+
         Product product = productRepo.findByProduct(dto.getProduct());
-        return dto.getCount() * product.getPrice();
+
+        Wallet wallet = walletRepo.findByCustomer(dto.getCustomer_uid());
+
+        if (dto.getCount() * product.getPrice() < wallet.getBalance()) {
+            wallet.setBalance(wallet.getBalance() - dto.getCount() * product.getPrice());
+            walletRepo.save(wallet);
+            return dto.getCount() * product.getPrice();
+        } else {
+            throw new CustomException(Messages.INSUFFICIENT_BALANCE);
+
+        }
     }
 
     void countLimit(OrderDto dto) {

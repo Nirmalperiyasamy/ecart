@@ -37,12 +37,19 @@ public class UserServiceImpl implements UserDetailsService {
     }
 
     public void register(UserDto dto) {
-        User dao = new User();
-        dto.setUid(UUID.randomUUID().toString());
-        BeanUtils.copyProperties(dto, dao);
-        String password = new BCryptPasswordEncoder().encode(dto.getPassword());
-        dao.setPassword(password);
-        userRepository.save(dao);
+        if (userExist(dto.getUsername())) {
+            throw new CustomException(Messages.USERNAME_EXIST);
+        } else {
+            User dao = new User();
+            dto.setUid(UUID.randomUUID().toString());
+            BeanUtils.copyProperties(dto, dao);
+            String password = new BCryptPasswordEncoder().encode(dto.getPassword());
+            dao.setPassword(password);
+            userRepository.save(dao);
+
+
+        }
+
     }
 
     public UserDto findByName(UserDto dto) {

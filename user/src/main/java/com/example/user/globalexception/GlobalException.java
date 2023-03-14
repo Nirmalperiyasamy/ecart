@@ -8,8 +8,8 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 public class GlobalException {
 
     @ExceptionHandler(value = CustomException.class)
-    public ResponseEntity<?> exception(CustomException errors){
-        return ResponseEntity.ok().body(errors);
+    public ResponseEntity<?> exception(CustomException exception) {
+        return ResponseEntity.badRequest().body(exception.getMessage());
     }
 
 }
