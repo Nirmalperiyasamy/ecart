@@ -60,7 +60,6 @@ public class JwtUtil {
 
     public <T> T extractClaim(String token, Function<Claims, T> claimsResolver) {
         final Claims claims = extractAllClaims(token);
-//        log.info(new ObjectMapper().writeValueAsString(claims));
         return claimsResolver.apply(claims);
     }
 
